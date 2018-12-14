@@ -1,30 +1,46 @@
-import numpy 
 import cv2
-import cv2.cv as cv
-import sys
-import time 
-import os
+from imutils.video.pivideosteam import PiVideoStream
+import imutils
+import time
+import  numpy as np 
 
-def main (argv):
-    '''
-    need to change feed location to actual cameras
-    '''
-    feed = null
-    feed = str(sys.argv[1])
+class Camera(object):
+	def __init__(self, flip = False):
+		self.vs = PiVideoStream().start()
+		self.flip = flip 
+		time.sleep(2.0)
 
-    os.system(feed)
+	def __del__(self):
+		self.vs.stop()
 
-    print("OpenCV applied")
-    print("url:" + feed)
+	def flip_if_needed(self, frame):
+		if self.flip:
+			return np.flip(frame,0)
+		return frame
 
-    capture = cv2.VideoCapture(feed)
-    capture.set(cv.CV_CAP_PROP_FRAME_WIDTH, 640)
-    capture.set(cv.CV_CAP_PROP_FRAME_HEIGHT, 480)
+	def get_frame(self):
+		frame = self.flip_if_needed(self.vs.read())
+		ret, jpeg = cv2.imencode('.jpg',frame)
+		return jpeg.tobytes()
 
-    if not capture.isOpened():
-        try:
-            capture.open()
-        except ValueError:
-            print("Can not open video. Check url and connection")
-            exit()
-    print("Video is streaming")
+	def get_object(self, classifier):
+		found_object = False
+		frame = self.flip_if_needed(slef.vs.read()).copy()
+		grey = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+		objects = classifier.detectMultiScale(
+			grey,
+			scaleFactor = 1.1,
+			minNeighbours = 5,
+			minSize = (30,30),
+			flags = cv2.CASCADE_SCALE_IMAGE
+		)
+
+		if len(objects) > 0:
+			found_object = True
+		
+		for(x,y,w,h) in objects:
+			cv2.rectangle(frame, (x,y), (x+w,y+h), (0,255,0), 2)
+
+		ret, jpeg = cv2.imencode('.jpg', frame)
+		return (jpeg.tobytes(), found_object)
