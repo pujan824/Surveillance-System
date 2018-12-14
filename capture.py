@@ -25,7 +25,7 @@ class Camera(object):
 
 	def get_object(self, classifier):
 		found_object = False
-		frame = self.flip_if_needed(slef.vs.read()).copy()
+		frame = self.flip_if_needed(self.vs.read()).copy()
 		grey = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
 		objects = classifier.detectMultiScale(
