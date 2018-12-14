@@ -1,2 +1,8 @@
 # Surveillance-System
-Create IP camera network with Raspberry Pi and PiCamera. Creates a dashboard that adds individual cameras to dashboard. Use face recognition and motion detection to determine if there is intruder. Sends email alert when there is an intruder.
+Currently this uses a RPi Zero W and creates a video feed with a server running on it /n
+
+TODO:
+Integrate Google login for html page /n
+Create webpage to view feed and change settings  /n
+Make Pi Zero an IP Camera  /n
+Make webdashboard running on Pi to display all feeds /n
