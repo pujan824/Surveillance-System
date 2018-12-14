@@ -1,7 +1,7 @@
 import smtplib
-from email.MINEMultipart import MINEMultipart
-from email.MIMEText import MIMEText
-from email.MIMEImage import MIMEImage
+from email.mime.multipart import MINEMultipart
+from email.mime.textext import MIMEText
+from email.mime.image import MIMEImage
 
 fromEmail = "email"
 fromPassword = "pasword"
@@ -26,7 +26,7 @@ def sendEmail(image):
 	msgImage.add_header('Content-ID', '<image1>')
 	msgRoot.attach(msgImage)
 
-	smtp = smtplib.SMTP('smtp.gmail.com', 587)
+	smtp = smtplib.SMTP('smtp.gmail.com', 587) # change port number
 	smtp.starttls()
 	smtp.login(fromEmail, fromEmailPassword)
 	smtp.sendmail(fromEmail, toEmail, msgRoot.as_string())

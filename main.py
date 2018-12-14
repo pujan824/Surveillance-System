@@ -3,7 +3,7 @@ import sys
 from mailer import sendEmail
 from flask import Flask, render_template, Response
 from capture import Camera
-from flask_basicauth import flask_basicauth
+from flask_basicauth import BasicAuth
 import time
 import threading
 
